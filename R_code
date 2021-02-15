@@ -39,7 +39,6 @@ temporal_instalacion <- datos %>%
   group_by(year(FECHA), instalacion) %>%
   summarize(n = length(unique(CLAVE)))
 
-png("C:/Users/maria/Desktop/temporal_instalacion.png", width = 24, height = 14, res= 600, units = "cm")
 ggplot(temporal_instalacion, aes(x = `year(FECHA)`)) + geom_bar(aes(y = n, fill = instalacion), 
   stat="identity") + scale_fill_manual("Tipo de instalación", values = c("TR" = "brown4", "CE" = "darkgreen")) +
   labs(x = "Fecha (año)", y = "TR/CE") + scale_x_continuous(breaks = year(datos$FECHA)) + 
@@ -47,7 +46,6 @@ ggplot(temporal_instalacion, aes(x = `year(FECHA)`)) + geom_bar(aes(y = n, fill 
   element_line(colour = "black"), panel.background = element_blank(), legend.key = 
   element_rect(fill = "white"), legend.position = "bottom", axis.title.y.left = element_text(face = "bold"), 
   axis.title.y.right = element_text(face = "bold"), axis.title.x = element_text(face = "bold")) + theme_hc() 
-dev.off()
 
 #Evolución temporal del número de muestras tomadas en TR/CE y actividades con TR/CE
 datos %>%
@@ -66,7 +64,6 @@ round(addmargins(prop.table(table(datos$EN_HOSPITALET, datos$INSTALACION)))*100,
 psych::describe(datos[,c(6, 8:15)], IQR = T)[ ,c(2, 5, 8, 9, 14)]
 
 #Boxplots
-png("C:/Users/maria/Desktop/boxplots.png", width = 24, height = 18, res= 600, units = "cm")
 par(mfrow = c(3, 3))
 for (i in 1:length(datos[, c(6, 8:15)])){
   ylab <- c("UFC/l", "UFC/ml", "", expression(mu*"S/cm"), "UNF", "mg/l", "mg/l", "mg/l", "")
@@ -75,7 +72,6 @@ for (i in 1:length(datos[, c(6, 8:15)])){
   boxplot(datos[, c(6, 8:15)][, i], ylab = ylab[i], main = paste(colnames[i], sep = " "),
   col = "chartreuse4")
 }
-dev.off()
 
 #1.1. POSITIVOS DE LEGIONELLA
 #Valores mínimo y máximo del recuento de Legionella
@@ -102,7 +98,6 @@ anual <- datos %>%
 anual <- anual %>% add_row(`year(FECHA)`= c(2017, 2018, 2019), n_1 = c(0,0,0), n_2 = c(0,0,0))
 
 #Relación entre la evolución anual de los positivos de Legionella y el recuento medio anual de Legionella
-png("C:/Users/maria/Desktop/recuento.png", width = 24, height = 14, res= 600, units = "cm")
 ggplot(anual, aes(x = `year(FECHA)`)) + geom_line(aes(y = n_1), size = 0.8, 
   color = "#000033") + geom_line(aes(y = n_2/55000), size = 0.8, colour = "#CC3366") +
   geom_point(aes(y = n_1), size = 2.5, color = "#000033", shape = 18) + geom_point(aes(y = 
@@ -119,7 +114,6 @@ ggplot(anual, aes(x = `year(FECHA)`)) + geom_line(aes(y = n_1), size = 0.8,
   legend.key = element_rect(fill = "white"), legend.position = "bottom", axis.title.y.left = 
   element_text(color = "#000033", face = "bold"), axis.title.y.right = element_text(color = "#CC3366", 
   face = "bold"), axis.title.x = element_text(face = "bold")) + theme_hc()
-dev.off()
 
 #1.2. ESTACIONALIDAD DE LOS POSITIVOS
 #Evolución mensual de los positivos de Legionella 
@@ -131,7 +125,6 @@ positivos_mes <- datos %>%
   summarise(n = n()) %>%
   mutate(freq = paste0(round(100 * n/sum(n), 2), "%"))
 
-png("C:/Users/maria/Desktop/mes.png", width = 22, height = 14, res= 600, units = "cm")
 ggplot(positivos_mes, aes(x = `month(FECHA)`)) + geom_bar(aes(y = n, fill = estacion), 
   stat="identity", color = "black") + geom_text(aes(y = n, label = paste0(n, "\n(", round(100*n/sum(n), 2), "%", ")")), 
   vjust = 1.4, size = 3.5, color = "white") + scale_fill_manual(values = c("#663333", "#993333", "#CC3333", "#FF3333")) +
@@ -141,7 +134,6 @@ ggplot(positivos_mes, aes(x = `month(FECHA)`)) + geom_bar(aes(y = n, fill = esta
   theme(axis.line = element_line(colour = "black"), legend.position = "none", panel.background = 
   element_blank(), axis.title.y.left = element_text(face = "bold"), axis.title.x = element_text(face = "bold"),
   axis.text.x = element_text(angle = 45, hjust = 1)) + theme_hc()
-dev.off()
 
 #Positivos y serogrupo Pneumophila por estación
 datos%>%
@@ -164,7 +156,6 @@ datos %>%
   mutate(freq = paste0(round(100 * n/sum(n), 2), "%"))
 
 #Positivos de Legionella por actividad (CCAE)
-png("C:/Users/maria/Desktop/actividad.png", width = 27, height = 15, res= 600, units = "cm")
 datos %>%
   filter(RECUENTO_LEGIONELLA >= 25) %>%
   group_by(CCAE) %>%
@@ -174,7 +165,6 @@ datos %>%
   geom_text(aes(label = paste0(n, " (", round(100*n/sum(n), 2), "%", ")"), x =1.28), position = position_stack(vjust = 0.5), color = "white") +
   coord_polar(theta = "y", start = 4) + theme_void() + scale_fill_viridis(option = "cividis", discrete=T) +
   labs(title = "", fill = "Actividad (CCAE)") 
-dev.off()
 
 #2. ANÁLISIS BIVARIANTE
 datos <- datos[ ,c(6,8:15)] #Seleccionamos los datos de parámetros microbiológicos y físico-químicos
@@ -262,7 +252,6 @@ datos %>%
   summarise_each(list(Mediana = ~ median(., na.rm = T), IQR = ~ IQR(., na.rm = T))) #Mediana e IQR
 
 #Gráficos de caja 
-png("C:/Users/maria/Desktop/diferencias.png", width = 28, height = 16, res = 600, units = "cm")
 par(mfrow = c(2, 4))
 for (i in 1: length(datos[,-9])) {
   ylab <- c("UFC/ml", "", expression(mu*"S/cm"), "UNF", "mg/l", "mg/l", "mg/l", "")
@@ -272,24 +261,19 @@ for (i in 1: length(datos[,-9])) {
   xlab = "", ylab = ylab[i], names = c("Ausencia de \nLegionella", "Presencia de \nLegionella"), 
   main = paste(colnames[i], sep = " "))
 }
-dev.off()
 
 #3. PUNTOS DE CORTE ÓPTIMOS (CURVAS ROC)
 for (i in 1:length(datos[ ,-9])){
   print(paste("Punto de corte óptimo", names(datos[i])))[i]
   print(summary(optimal.cutpoints(names(datos[-9])[i], status = "PRESENCIA_LEGIONELLA", tag.healthy = 0, 
-  methods = c("Youden", "SpEqualSe", "MaxSpSe"), data = datos, pop.prev = NULL, ci.fit = TRUE, conf.level = 0.95, control = control.cutpoints())))
+  methods = "Youden", data = datos, pop.prev = NULL, ci.fit = TRUE, conf.level = 0.95, control = control.cutpoints())))
   print(paste("Significación AUC", names(datos[i])))[i]
   print(roc.area(as.numeric(as.vector(datos$PRESENCIA_LEGIONELLA)), datos[ ,i])$p.value)  
 }
 
-plot(optimal.cutpoints("AEROBIOS TOTALES", status = "PRESENCIA_LEGIONELLA", tag.healthy = 0, methods = 
-  c("MaxSpSe"), data = datos, pop.prev = NULL, ci.fit = TRUE, conf.level = 0.95, control = control.cutpoints()))
-
 #Gráfico curvas ROC
 roc_curve <- lapply(datos[ ,-9], function(x) roc(datos$PRESENCIA_LEGIONELLA, x, auc = T, ci = T, direction = "<"))
 
-png("C:/Users/maria/Desktop/curvas.png", width = 16, height = 16, res= 600, units = "cm")
 ggroc(list("Aerobios \ntotales" = roc_curve$AEROBIOS_TOTALES, "pH" = roc_curve$PH, "Conductividad" = 
   roc_curve$CONDUCTIVIDAD, "Turbidez" = roc_curve$TURBIDEZ, "Hierro total" = roc_curve$HIERRO,
   "Alcalinidad" = roc_curve$ALCALINIDAD, "Dureza" = roc_curve$DUREZA, "Índice de \nLangelier" = 
@@ -324,8 +308,7 @@ ggroc(list("Aerobios \ntotales" = roc_curve$AEROBIOS_TOTALES, "pH" = roc_curve$P
   "darkorange", "brown", "blueviolet", "deeppink3")) + theme(axis.line = element_line(colour = "black"), panel.background = element_blank(), 
   legend.key = element_rect(fill = "white"), legend.position = "none", legend.title = element_blank(), 
   axis.title.y.left = element_text(face = "bold"), axis.title.y.right = element_text(face = "bold"), 
-  axis.title.x = element_text(face = "bold"))
-dev.off()                                                                                            
+  axis.title.x = element_text(face = "bold"))                                                                                         
 
 #4. ANÁLISIS DE REGRESIÓN LOGÍSTICA
 #4.1. ANÁLISIS UNIVARIANTE: PRESELECCIÓN DE VARIABLES PREDICTORAS
@@ -422,14 +405,14 @@ res_1 <- rstandard(step_model, type = "pearson") #Residuos estandarizados de Pea
 table(abs(res_1) > 2) #8 residuos > 2 (8/351 = 0.02: menos del 5% de los residuos no pertenece al intervalo (-2,2))
 res_2 <- rstandard(step_model, type = "deviance") #Residuos estandarizados de la Devianza
 table(abs(res_2) > 2) #7 residuos > 2
+
 #Gráfico residuos estandarizados de Pearson y de la Devianza
-png("C:/Users/maria/Desktop/residuos.png", width = 15, height = 15, res= 600, units = "cm")
 plot(res_1, col = "blue", xlab = "Observación", ylab = "Residuos estandarizados", pch = 1) #Residuos estandarizados de Pearson
 points(res_2, col = "darkred", pch = 1) #Residuos estandarizados de la Devianza
 legend(-1,22.5, legend = c("Residuos de Pearson", "Residuos de la Devianza"), col = c("blue", "darkred"), 
   pch = 1, cex = 0.8, box.lty = 0)
 abline(h = 2, lty = 2) 
-dev.off()
+
 #Medidas de influencia
 (n <- dim(datos_MLG)[1]) #n = 351
 leverage <- hatvalues(step_model) #Leverage
@@ -440,16 +423,17 @@ table(cook > 4/n) #22 residuos con una distancia de Cook > 4/n
 #Gráfico residuos estandarizados vs.Leverage
 plot(x = leverage, y = res_1, xlab = "Leverage", ylab = "Residuos estandarizados de Pearson") 
 abline(v = 2*k/n, h = 2, lty = 2)
+
 #Gráfico distancia de Cook
 plot(step_model, which = 4) 
 abline(h = 4/n, lty = 2)
 #Las observaciones más influyentes son la 215, la 242 y la 738
+
 #Gráfico residuos estandarizados vs. Leverage (+ Distancia de Cook)
-png("C:/Users/maria/Desktop/influencia.png", width = 15, height = 15, res= 600, units = "cm")
 plot(step_model, which = 5, ann = FALSE, id.n = 20) 
 title(main="", xlab = "Leverage", ylab = "Residuos estandarizados de Pearson")
 abline(v = 2*k/n, h = 2, lty = 2)
-dev.off()
+
 #Análisis de las observaciones más influyentes
 influencePlot(step_model) 
 #No se aprecia ninguna observación que tenga una influencia desproporcionada sobre los valores de los coeficientes
@@ -512,11 +496,9 @@ paste0("Puntuación F1 del modelo = ", round(2*((precision*recall)/(precision+re
 #Evaluación de la capacidad predictiva del modelo: curva ROC-AUC
 (ROC <- roc(test$PRESENCIA_LEGIONELLA, predicted, auc = T)) #AUC = 0.88 (buen modelo de clasificación)
 
-png("C:/Users/maria/Desktop/ROC.png", width = 15, height = 15, res= 600, units = "cm")
 ggroc(ROC, col = "brown2", size = 0.8) + geom_abline(aes(intercept = 1, slope = 1), color = "burlywood4", 
   size = 1) + scale_x_reverse(name = "1 - Especificidad") + scale_y_continuous(name = "Sensibilidad") + 
   annotate("text", x = 0.05, y = 0, vjust = 0, label = paste0("AUC = ", round(auc(ROC), 2)), col = "brown2", 
   size = 5) + theme(axis.line = element_line(colour = "black"), panel.background = element_blank(), legend.key 
   = element_rect(fill = "white"), legend.position = "bottom", legend.title = element_blank(), axis.title.x = 
   element_text(face = "bold"), axis.title.y = element_text(face = "bold"))
-dev.off()
