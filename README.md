@@ -1,8 +1,6 @@
 # TFM: Análisis de los parámetros microbiológicos y físico-químicos asociados a la presencia de Legionella en torres de refrigeración y condensadores evaporativos
 
-**Máster en Estadística e Investigación Operativa**
-
-**Universitat Politècnica de Catalunya**
+**Máster en Estadística e Investigación Operativa | Universitat Politècnica de Catalunya**
 
 Antecedentes: Las torres de refrigeración y condensadores evaporativos son instalaciones de alto riesgo para la proliferación de Legionella, y la notable cantidad de aerosoles contaminantes generados por estas puede causar brotes comunitarios de legionelosis cuando su mantenimiento y limpieza son deficientes. El objetivo principal del presente estudio ha sido identificar y analizar los factores de riesgo para la presencia de Legionella en dichas instalaciones a partir de los datos sobre parámetros microbiológicos y físico-químicos proporcionados por el Negociat de Salut Ambiental y el Negociat de Laboratori del Ayuntamiento de L’Hospitalet, los cuales han sido relacionados con la proliferación de la bacteria en estudios previos.
 
